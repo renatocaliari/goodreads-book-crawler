@@ -1,0 +1,10 @@
+composio-phidata
+streamlit
+pandas
+rich
+grpcio==1.67.1
+grpcio-status==1.67.1
+google-generativeai
+pydantic
+phidata
+crawl4ai
