@@ -19,7 +19,7 @@ import os
 import pandas as pd
 import logging
 
-os.system('playwright install')
+# os.system('playwright install')
 os.system('playwright install-deps')
 os.system('crawl4ai-setup')
 
