@@ -234,7 +234,7 @@ with st.sidebar:
         st.session_state['run_evaluation'] = False
 
 main_status_placeholder = st.empty()
-logger_manager = LoggerManager(logger, main_status_placeholder)
+logger_manager = LoggerManager(logging, main_status_placeholder)
 
 if st.session_state.get('run_evaluation', False):
     logger_manager.log(f"Debug 0")
