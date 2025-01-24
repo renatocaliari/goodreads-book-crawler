@@ -17,8 +17,8 @@ from decimal import Decimal
 from phi.agent import Agent, RunResponse
 import os
 import pandas as pd
-from rich.console import Console
-from rich.table import Table
+# from rich.console import Console
+# from rich.table import Table
 import logging
 
 # os.system('playwright install')
@@ -68,29 +68,29 @@ class Book(BaseModel):
 class ListBooks(BaseModel):
     books: list[Book] = Field(..., description="List of books.")
 
-def display_books_table(books: List[Book]):
-    """Displays a list of books in a formatted table using rich."""
-    console = Console()
-    table = Table(title="Books Information")
+# def display_books_table(books: List[Book]):
+#     """Displays a list of books in a formatted table using rich."""
+#     console = Console()
+#     table = Table(title="Books Information")
 
-    table.add_column("Title", style="cyan", no_wrap=True)
-    table.add_column("Author", style="magenta")
-    table.add_column("Summary", style="green", no_wrap=True)
-    table.add_column("Pages", style="yellow", justify="right")
-    table.add_column("Rating", style="blue", justify="right")
-    table.add_column("Reviews", style="red", justify="right")
+#     table.add_column("Title", style="cyan", no_wrap=True)
+#     table.add_column("Author", style="magenta")
+#     table.add_column("Summary", style="green", no_wrap=True)
+#     table.add_column("Pages", style="yellow", justify="right")
+#     table.add_column("Rating", style="blue", justify="right")
+#     table.add_column("Reviews", style="red", justify="right")
     
-    for book in books:
-        table.add_row(
-            book.title if book.title else "Unknown",
-            book.author if book.author else "Unknown",
-            book.summary if book.summary else "No summary",
-            ", ".join(book.genres) if book.genres else "-",
-            str(book.pages) if book.pages else "Unknown",
-            str(book.rating) if book.rating else "Unknown",
-            str(book.reviews) if book.reviews else "Unknown"
-        )
-    console.print(table)
+#     for book in books:
+#         table.add_row(
+#             book.title if book.title else "Unknown",
+#             book.author if book.author else "Unknown",
+#             book.summary if book.summary else "No summary",
+#             ", ".join(book.genres) if book.genres else "-",
+#             str(book.pages) if book.pages else "Unknown",
+#             str(book.rating) if book.rating else "Unknown",
+#             str(book.reviews) if book.reviews else "Unknown"
+#         )
+#     console.print(table)
 
 def save_books_to_csv(df_books: pd.DataFrame, filename: str = "books.csv"):
     """Saves a list of books to a CSV file."""
