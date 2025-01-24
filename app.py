@@ -304,6 +304,6 @@ if st.session_state.get('run_evaluation', False):
             else:
                 st.markdown("Error: No books found.")  
                 print("No books found to display or save.")
-    except Exception as e:
-        logger_manager.log(f"Error: {e}")
+        except Exception as e:
+            logger_manager.log(f"Error: {e}")
 
