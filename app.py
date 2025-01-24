@@ -237,9 +237,9 @@ main_status_placeholder = st.empty()
 logger_manager = LoggerManager(logger, main_status_placeholder)
 
 if st.session_state.get('run_evaluation', False):
+    logger_manager.log(f"Debug 0")
     with st.spinner('Scraping and crawling books...'):
         try:
-            logger_manager.log(f"Debug 0")
             books: ListBooks = asyncio.run(scrape_books(url_books, qty_books))
             st.session_state['books'] = books
             if books and books.books and len(books.books) > 0:
