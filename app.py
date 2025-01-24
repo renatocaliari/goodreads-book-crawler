@@ -222,7 +222,7 @@ async def scrape_books(url_books: List[str], max_books: int = 1) -> ListBooks:
         books = await crawl_sequential(filtered_urls,max_books)
         # logger_manager.log(f"books: {books}")
     except Exception as e:
-        logger_manager.log(f"Error {e}")
+        logger_manager.log(f"scrape_books - Error {e}")
     finally:
         await crawler.close()
         return books
@@ -269,38 +269,41 @@ logger_manager = LoggerManager(logger, main_status_placeholder)
 
 if st.session_state.get('run_evaluation', False):
     with st.spinner('Scraping and crawling books...'):
-        books: ListBooks = asyncio.run(scrape_books(url_books, qty_books))
-        st.session_state['books'] = books
-        if books and books.books and len(books.books) > 0:
-            df = pd.DataFrame([book.model_dump() for book in books.books])
-            df.round(2)
-            df=df.round({"rating": 2})
-            save_books_to_csv(df)
-            # display_books_table(books.books)
-            st.dataframe(df,
-                column_config={
-                    "book_url": st.column_config.LinkColumn("Book URL")
-                }
-            )
+        try:
+            books: ListBooks = asyncio.run(scrape_books(url_books, qty_books))
+            st.session_state['books'] = books
+            if books and books.books and len(books.books) > 0:
+                df = pd.DataFrame([book.model_dump() for book in books.books])
+                df.round(2)
+                df=df.round({"rating": 2})
+                # save_books_to_csv(df)
+                # display_books_table(books.books)
+                st.dataframe(df,
+                    column_config={
+                        "book_url": st.column_config.LinkColumn("Book URL")
+                    }
+                )
 
-            # toolset = ComposioToolSet(entity_id="myself", logging_level=logging.DEBUG)
-            # tools = toolset.get_tools(actions=['GOOGLESHEETS_SHEET_FROM_JSON'])
-            # agent = Agent(model=MODEL_GEMINI,
-            #     description=f"You are a helpful assistant.",
-            #     instructions=["Add the list of the books them to a google sheet title 'My books {timestamp}'."],
-            #     tools=tools, show_tool_calls=True, verbose=True)
-            # books = [
-            #     {k: str(v) for k, v in book.model_dump().items()}
-            #     for book in books.books
-            # ]
-            # # Convertendo a lista de livros para JSON
-            # books_json = json.dumps(books)
-            # logger_manager.log(f"books: {books_json}")
-            
-            # response: RunResponse = agent.run(books_json)
-            # logger_manager.log("rodou agent...")
-            # print("🚀 Response from agent: ", response)
-        else:
-            st.markdown("Error: No books found.")  
-            print("No books found to display or save.")
+                # toolset = ComposioToolSet(entity_id="myself", logging_level=logging.DEBUG)
+                # tools = toolset.get_tools(actions=['GOOGLESHEETS_SHEET_FROM_JSON'])
+                # agent = Agent(model=MODEL_GEMINI,
+                #     description=f"You are a helpful assistant.",
+                #     instructions=["Add the list of the books them to a google sheet title 'My books {timestamp}'."],
+                #     tools=tools, show_tool_calls=True, verbose=True)
+                # books = [
+                #     {k: str(v) for k, v in book.model_dump().items()}
+                #     for book in books.books
+                # ]
+                # # Convertendo a lista de livros para JSON
+                # books_json = json.dumps(books)
+                # logger_manager.log(f"books: {books_json}")
+                
+                # response: RunResponse = agent.run(books_json)
+                # logger_manager.log("rodou agent...")
+                # print("🚀 Response from agent: ", response)
+            else:
+                st.markdown("Error: No books found.")  
+                print("No books found to display or save.")
+    except Exception as e:
+        logger_manager.log(f"Error: {e}")
 
